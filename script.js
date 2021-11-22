@@ -45,6 +45,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
 					`;
 				});
 				function filter (event) {
+					
 					let byType = Array.from(document.forms['filter-challenges'].elements['types[]']).filter(function (input) { return input.checked }).map(function (input) { return `[data-type="${input.value}"]`; }).join(),
 						byTags = Array.from(document.forms['filter-challenges'].elements['tags[]']).filter(function (input) { return input.checked }).map(function (input) { return `[data-tags~="${input.value}"]`; }).join(),
 						maxRanting = +document.forms['filter-challenges'].elements['maximum'].value,
@@ -52,6 +53,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
 						keywords = document.forms['filter-challenges'].elements['keywords'].value.trim(),
 						pattern = new RegExp(keywords.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'ig'),
 						count = 0;
+						
 					Array.from(document.querySelectorAll('#challenges .card')).forEach(function (card) {
 						let rating = +card.dataset['rating'],
 							title = card.querySelector(".title").textContent,
@@ -81,10 +83,8 @@ document.addEventListener("DOMContentLoaded", function (event) {
 					}
 				}
 				document.forms['filter-challenges'].elements['keywords'].addEventListener("keyup", filter, false);
-				Array.from(document.forms['filter-challenges'].elements).forEach(function (input) {
-					input.addEventListener("change", filter, false);
-				});
-				let filterByTags = document.querySelector("#filter-by-tags");
+                let filterByTags = document.querySelector("#filter-by-tags");
+	
 				distinctTags.forEach(function (tag) {
 					let input = document.createElement("input");
 					input.addEventListener("change", filter, false);
@@ -96,6 +96,9 @@ document.addEventListener("DOMContentLoaded", function (event) {
 					input.setAttribute("value", tag);
 					filterByTags.append(input);
 					filterByTags.innerHTML += `<label class="chip" for="tag-${tag}">${tag}</label>`;
+				});
+				Array.from(document.forms['filter-challenges'].elements).forEach(function (input) {
+					input.addEventListener("change", filter, false);
 				});
 			}).catch(function (error) {
 				console.error(error);
